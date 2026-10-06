@@ -1,0 +1,58 @@
+body,button,input,select{font-family:var(--font-sans),"Segoe UI",sans-serif}
+.page-heading h1,.card h2,.brand strong,.metric .value,.account-strip b,#gridPrice,.login-card h1{font-family:var(--font-display),"Segoe UI",sans-serif}
+.ico{width:16px;height:16px;flex:0 0 auto;display:block}
+.brandmark .ico{width:18px;height:18px}
+.rail nav a{display:flex;align-items:center;gap:10px}
+.heading-actions,.control-buttons,.top-actions{display:flex;align-items:center;gap:8px}
+.heading-actions button,.control-buttons button,.secondary,.primary,.danger,.icon-btn{display:inline-flex;align-items:center;justify-content:center;gap:7px}
+.control-buttons{flex-wrap:wrap}
+.control-buttons button{min-height:40px}
+.icon-btn{width:36px;height:36px;padding:0}
+.segmented button{display:inline-flex;align-items:center;justify-content:center;gap:6px;min-height:38px;font-size:12px}
+.control-card .field-label{display:block;margin:14px 0 8px}
+.card{border-radius:12px}
+.metric{border-radius:12px}
+.account-strip div{min-width:0}
+.account-strip b{overflow-wrap:anywhere}
+.app-loader{position:fixed;inset:0;z-index:80;display:grid;place-items:center;background:#f4f7fbcc;backdrop-filter:blur(3px)}
+.app-loader[hidden]{display:none}
+.loader-card{display:grid;justify-items:center;gap:8px;min-width:220px;padding:22px 24px;border:1px solid #d8e2ec;border-radius:14px;background:#fff;box-shadow:0 18px 50px #0f172a18;color:#172334;text-align:center}
+.loader-card strong{font-family:var(--font-display),"Segoe UI",sans-serif;font-size:16px}
+.loader-card span:last-child{color:#64748b;font-size:12px}
+.spinner{width:28px;height:28px;border:3px solid #d7e4c8;border-top-color:#3d8a4d;border-radius:50%;animation:spin .7s linear infinite}
+.empty-chart{display:grid;place-items:center;align-content:center;gap:10px;text-align:center;padding:16px}
+@keyframes spin{to{transform:rotate(360deg)}}
+.chart-meta,.card-head,.ohlc-row{flex-wrap:wrap}
+.table-wrap{overflow:auto}
+@media(max-width:900px){
+  .app{display:block}
+  .rail{width:100%;min-width:0;height:auto;position:sticky;top:0;z-index:30;padding:10px 12px 8px}
+  .brand{padding:0 0 8px}
+  .brand>div:last-child{display:block}
+  .rail-section,.rail-bottom{display:none}
+  .rail nav{display:flex;gap:6px;overflow:auto;padding-bottom:2px}
+  .rail nav a{width:auto;white-space:nowrap;padding:8px 10px;font-size:12px}
+  .rail nav a span{display:inline}
+  .topbar{height:auto;min-height:56px;flex-wrap:wrap;gap:8px;padding:10px 12px}
+  .content{padding:16px 12px 32px}
+  .page-heading{flex-direction:column;align-items:stretch}
+  .heading-actions{width:100%}
+  .heading-actions button{flex:1}
+  .metrics{grid-template-columns:1fr 1fr}
+  .account-strip,.option-picks,.settings-grid{grid-template-columns:1fr 1fr}
+  .main-grid,.lower-grid,.bottom-grid{grid-template-columns:1fr}
+  .chart-shell{height:360px}
+  .chart-watermark{font-size:36px}
+}
+@media(max-width:640px){
+  .breadcrumb{display:none}
+  .metrics,.account-strip,.option-picks,.settings-grid,.heading-actions,.control-buttons{grid-template-columns:1fr}
+  .control-buttons{display:grid}
+  .control-buttons button,.heading-actions button{width:100%}
+  .top-actions{width:100%;justify-content:space-between}
+  .chart-shell{height:300px}
+  .segmented{flex-direction:column}
+  .segmented button{width:100%}
+  .broker-trigger span{display:inline}
+  footer{padding:14px}
+}

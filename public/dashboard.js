@@ -47,7 +47,7 @@ function render(){if(!state)return;const s=state,c=s.config;
   $('status').textContent=s.status[0].toUpperCase()+s.status.slice(1);
   $('status').className='value '+(s.status==='running'?'positive':s.status==='killed'?'negative':'');
   const hours=s.config?.strategyStart&&s.config?.strategyEnd?`${s.config.strategyStart}–${s.config.strategyEnd} IST`:'';
-  const tradeLabel=(s.status==='running'?s.tradeMode:tradeChoice)==='live'?'LIVE SIGNAL':'EXISTING';
+  const tradeLabel=(s.status==='running'?s.tradeMode:tradeChoice)==='live'?'NEXT SIGNAL':'CURRENT STRIKE';
   $('statusSub').textContent=[s.haltReason|| (s.direction?`${s.direction.toUpperCase()} · ${tradeLabel} · ${s.mode} · ${s.day||'today'}`:'Select direction to begin'),hours].filter(Boolean).join(' · ');
   $('pnl').textContent=money(s.pnl);$('pnl').className='value '+(s.pnl>0?'positive':s.pnl<0?'negative':'');
   $('openLegs').innerHTML=`${s.legs.length} <em>/ ${c.maxLegs}</em>`;
@@ -57,14 +57,14 @@ function render(){if(!state)return;const s=state,c=s.config;
   $('lastPrice').textContent=marketLast!=null?num(marketLast):num(s.lastPrice);$('bufferLabel').textContent=`${c.entryBuffer} pts`;
   $('directionBadge').textContent=s.status==='running'?`${(s.direction||'BUY').toUpperCase()} RUNNING`:s.status==='paused'?'STOPPED':'NOT STARTED';
   $('directionBadge').className='badge '+(s.status==='running'?(s.direction||'buy'):'neutral');
-  $('pendingBox').textContent=s.tradeMode==='live'&&s.status==='running'&&!(s.signal?.spot>0)?'Live mode · waiting for the next signal':s.pending?`Trigger waiting · ${s.pending.side.toUpperCase()} at ${num(s.pending.price)}${s.option?` · ${s.option.label}`:''}`:(s.signal?.spot?`Signal ${num(s.signal.spot)} · ${s.option?.label||'strike pending'}`:(s.level?'Entry cycle used · no re-entry':'No trigger candle yet'));
+  $('pendingBox').textContent=s.tradeMode==='live'&&s.status==='running'&&!(s.signal?.spot>0)?'Next signal · waiting for a new buy or sell':s.pending?`Trigger waiting · ${s.pending.side.toUpperCase()} at ${num(s.pending.price)}${s.option?` · ${s.option.label}`:''}`:(s.signal?.spot?`Signal ${num(s.signal.spot)} · ${s.option?.label||'strike pending'}`:(s.level?'Entry cycle used · no re-entry':'No trigger candle yet'));
   if(!tradeChoiceReady){tradeChoice=s.tradeMode==='live'?'live':'existing';tradeChoiceReady=true;}
   const shownTrade=s.status==='running'?(s.tradeMode==='live'?'live':'existing'):tradeChoice;
   $('modeExisting').classList.toggle('selected',shownTrade==='existing');
   $('modeLive').classList.toggle('selected',shownTrade==='live');
   $('modeExisting').disabled=s.status==='running';
   $('modeLive').disabled=s.status==='running';
-  $('tradeModeNote').textContent=shownTrade==='live'?'Live waits for the next signal, then trades that strike.':'Existing keeps trading the strike already selected.';
+  $('tradeModeNote').textContent=shownTrade==='live'?'Next signal waits for a new buy or sell, then trades that strike.':'Current strike keeps trading the option already selected.';
   if(s.option?.scripCode&&s.direction)paintOption(s.option);
   $('start').disabled=s.status==='running';$('stop').disabled=s.status!=='running';
   $('buyDirection').disabled=!!s.direction;$('shortDirection').disabled=!!s.direction;
@@ -73,7 +73,8 @@ function render(){if(!state)return;const s=state,c=s.config;
   const key=`${c.exchange}:${c.scripCode||''}`;
   if(key!==marketKey){marketKey=key;loadMarket(true);}
 }
-function showChartMessage(message){const el=$('emptyChart');el.style.display='grid';el.textContent=message;}
+function setLoader(on,text){const el=$('appLoader');if(!el)return;el.hidden=!on;if(text&&$('loaderText'))$('loaderText').textContent=text;}
+function showChartMessage(message){const el=$('emptyChart');el.style.display='grid';el.innerHTML=`<span class="spinner"></span><span>${escape(message)}</span>`;}
 function istStamp(time){const seconds=typeof time==='number'?time:Math.floor(Date.UTC(time.year,time.month-1,time.day)/1000);return new Date(seconds*1000).toLocaleString('en-IN',{timeZone:'Asia/Kolkata',day:'2-digit',month:'short',hour:'2-digit',minute:'2-digit'});}
 function barChange(bar){const index=chartBars.findIndex(item=>item.time===bar.time);const full=index>=0?chartBars[index]:bar;const prev=index>0?chartBars[index-1]:null;const base=prev?prev.close:Number(full.open);const change=Number(full.close)-base;return {full,change,pct:base?(change/base)*100:0};}
 function paintMove(change,pct,element){element.textContent=`${change>=0?'+':''}${num(change)} (${change>=0?'+':''}${pct.toFixed(2)}%)`;element.className=change>=0?'up':'down';}
@@ -100,9 +101,10 @@ function connectLive(){if(liveSocket&&liveSocket.readyState<2)return;liveSocket=
 function paintBrokerBook(book){const meta=$('brokerBookMeta'),orders=$('brokerOrdersBody'),positions=$('brokerPositionsBody');if(!orders||!positions)return;if(meta)meta.textContent=book?.error||(book?.connected?`Live · ${book.orders.length} orders · ${book.positions.length} positions`:'Connect Sharekhan');const rupee=value=>value==null||value===''?'—':'₹'+num(value);const profile=book?.profile||{},funds=book?.funds;if($('brokerLoginId'))$('brokerLoginId').textContent=profile.loginId||'—';if($('brokerCustomerId'))$('brokerCustomerId').textContent=profile.customerId||'—';if($('brokerCash'))$('brokerCash').textContent=funds?rupee(funds.cash):'—';if($('brokerFno'))$('brokerFno').textContent=funds?rupee(funds.fnoMargin):'—';if($('brokerNonCash'))$('brokerNonCash').textContent=funds?rupee(funds.nonCash):'—';if($('brokerHold'))$('brokerHold').textContent=funds?rupee(funds.hold):'—';if($('brokerPremium'))$('brokerPremium').textContent=funds?rupee(funds.fnoPremium):'—';if($('brokerWithdrawal'))$('brokerWithdrawal').textContent=funds?rupee(funds.withdrawal):'—';const blank=(cols,text)=>`<tr><td colspan="${cols}" class="empty-row">${escape(text)}</td></tr>`;const tone=side=>side==='BUY'?'up':side==='SELL'?'down':'';orders.innerHTML=book?.orders?.length?book.orders.map(row=>`<tr><td>${escape(row.orderId)}</td><td>${escape(row.symbol)}</td><td class="${tone(row.side)}">${escape(row.side)}</td><td>${escape(row.quantity)}</td><td>${escape(row.filled)}</td><td>${row.price==null?'—':num(row.price)}</td><td>${escape(row.status)}</td><td>${escape(row.product)}</td></tr>`).join(''):blank(8,book?.error||'No Sharekhan orders today');positions.innerHTML=book?.positions?.length?book.positions.map(row=>{const pnl=row.pnl;return `<tr><td>${escape(row.symbol)}</td><td class="${tone(row.side)}">${escape(row.side)}</td><td>${escape(row.quantity)}</td><td>${row.avg==null?'—':num(row.avg)}</td><td>${row.ltp==null?'—':num(row.ltp)}</td><td style="color:${pnl==null?'inherit':pnl>=0?'#25874a':'#c7434d'}">${pnl==null?'—':money(pnl)}</td><td>${escape(row.product)}</td></tr>`}).join(''):blank(7,book?.error||'No open Sharekhan positions');}
 async function refreshBrokerBook(){try{const response=await fetch('/api/sharekhan/book');const data=await response.json();if(!response.ok)throw Error(data.error||'Sharekhan book failed');paintBrokerBook(data);}catch(error){paintBrokerBook({connected:false,orders:[],positions:[],error:error.message});}}
 function bootGridPilot(){
+  setLoader(true,'Checking the strategy…');
   bootTimers.forEach(clearInterval);bootTimers=[];
   tvChart=null;candleSeries=null;volumeSeries=null;smaCloseSeries=null;smaOpenSeries=null;signalMarkers=null;stopLine=null;highLine=null;lowLine=null;buyStrikeLine=null;sellStrikeLine=null;gridLines=[];chartBars=[];marketKey='';marketLast=null;brokerWasConnected=false;
-  $('refresh').onclick=()=>api('state').catch(e=>toast(e.message,true));
+  $('refresh').onclick=async()=>{setLoader(true,'Refreshing the dashboard…');try{await api('state');}catch(e){toast(e.message,true);}finally{setLoader(false);}};
   $('chartFit').onclick=()=>tvChart?.timeScale().fitContent();
   const zoomChart=factor=>{const scale=tvChart?.timeScale();const range=scale?.getVisibleLogicalRange();if(!range)return;const span=Math.max(8,(range.to-range.from)*factor);const center=(range.from+range.to)/2;scale.setVisibleLogicalRange({from:center-span/2,to:center+span/2});};
   $('chartZoomIn').onclick=()=>zoomChart(0.72);
@@ -120,7 +122,7 @@ function bootGridPilot(){
   const strategySpot=()=>tradeChoice==='existing'?(state?.option?.spot||marketLast):(signalPrice(chosen==='short'?'sell':'buy')||marketLast);
   const startBody=broker=> ({direction:chosen,mode:broker,tradeMode:tradeChoice,spot:strategySpot()});
   $('start').onclick=()=>action('start',startBody('paper'));
-  $('startLive').onclick=()=>{const liveSignal=tradeChoice==='live';if(!confirm(liveSignal?'Live mode will wait for the next market signal, then send that strike to Sharekhan.':'Existing mode will send orders for the current strike to Sharekhan.'))return;action('start',startBody('live'));};
+  $('startLive').onclick=()=>{const nextSignal=tradeChoice==='live';if(!confirm(nextSignal?'Next signal will wait for a new buy or sell, then send that strike to Sharekhan.':'Current strike will send orders for the option already selected to Sharekhan.'))return;action('start',startBody('live'));};
   $('stop').onclick=()=>action('stop');
   $('kill').onclick=()=>{if(confirm('Kill the strategy? Open live positions are squared off at Sharekhan and pending orders are cancelled.'))action('kill')};
   $('newDay').onclick=()=>{if(confirm('Reset strategy for a new trading day? This clears the current dashboard state.'))action('new-day')};
@@ -131,7 +133,7 @@ function bootGridPilot(){
     document.querySelector('[name="exchange"]').innerHTML=meta.exchanges.map(item=>`<option value="${escape(item.code)}">${escape(item.label)}</option>`).join('');
     document.querySelector('[name="productType"]').innerHTML=meta.productTypes.map(item=>`<option value="${escape(item.code)}">${escape(item.label)}</option>`).join('');
     return api('state');
-  }).then(s=>{fillSettings(s.config);refreshOption();}).catch(e=>toast(e.message,true));
+  }).then(s=>{fillSettings(s.config);refreshOption();setLoader(false);}).catch(e=>{setLoader(false);toast(e.message,true);});
   const symbolInput=document.querySelector('[name="symbol"]');
   let symbolTimer;
   symbolInput.addEventListener('input',()=>{clearTimeout(symbolTimer);symbolTimer=setTimeout(()=>searchSymbols(symbolInput.value),200);});
