@@ -69,3 +69,12 @@ td{border-color:#edf1f5}
 footer{color:#64748b}
 #toast{background:#f0f8ff;color:#1d4259;border-color:#bcd8eb;box-shadow:0 12px 30px #25344d20}
 #toast.error{background:#fff0f1;border-color:#e8b4bc;color:#9d2f3c}
+.login-screen{min-height:100vh;display:grid;place-items:center;padding:24px;background:#f4f7fb}
+.login-card{width:min(420px,100%);background:#fff;border:1px solid #d8e2ec;border-radius:16px;padding:28px;box-shadow:0 18px 50px #0f172a14}
+.login-card .brandmark{width:42px;height:42px;display:grid;place-items:center;border-radius:10px;font-size:22px;margin-bottom:14px}
+.login-card h1{margin:6px 0 8px;font:800 28px Manrope,Arial,sans-serif}
+.login-card p{margin:0 0 18px;color:#64748b;font-size:13px;line-height:1.5}
+.login-card label{display:block;margin-bottom:12px;font-size:11px;font-weight:800;color:#62748b}
+.login-card input{display:block;width:100%;margin-top:6px;padding:11px 12px;border:1px solid #cbd5e1;border-radius:8px;font-size:14px;color:#172334}
+.login-card button{width:100%;margin-top:6px;padding:12px;border:0;border-radius:8px;background:#172334;color:#fff;font-weight:800}
+.login-error{color:#c7434d!important;font-weight:700}
