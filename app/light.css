@@ -38,6 +38,7 @@ tr.grid-next td{background:#e7f6ea}
 #gridPrice{color:#172334}
 #lastPrice.up,#gridPrice.up,td.up{color:#1f8a4c}
 #lastPrice.down,#gridPrice.down,td.down{color:#c44752}
+.table-scroll thead th{background:#fff}.account-strip div{background:#f8fafc;border-color:#e2e8f0}.account-strip b{color:#172334}
 .row-actions button,.grid-edit input{background:#fff;border-color:#cbd5e1;color:#172334}
 .row-actions button.danger{color:#b83f49}
 .chart-shell{background:linear-gradient(#e9eef4 1px,transparent 1px) 0 0/100% 25%,linear-gradient(90deg,#e9eef4 1px,transparent 1px) 0 0/12.5% 100%,#fff;border-color:#dce3ec}
