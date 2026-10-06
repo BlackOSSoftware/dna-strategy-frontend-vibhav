@@ -46,7 +46,8 @@ async function searchSymbols(query){
 function render(){if(!state)return;const s=state,c=s.config;
   $('status').textContent=s.status[0].toUpperCase()+s.status.slice(1);
   $('status').className='value '+(s.status==='running'?'positive':s.status==='killed'?'negative':'');
-  $('statusSub').textContent=s.haltReason|| (s.direction?`${s.direction.toUpperCase()} · ${s.mode} · ${s.day||'today'}`:'Select direction to begin');
+  const hours=s.config?.strategyStart&&s.config?.strategyEnd?`${s.config.strategyStart}–${s.config.strategyEnd} IST`:'';
+  $('statusSub').textContent=[s.haltReason|| (s.direction?`${s.direction.toUpperCase()} · ${s.mode} · ${s.day||'today'}`:'Select direction to begin'),hours].filter(Boolean).join(' · ');
   $('pnl').textContent=money(s.pnl);$('pnl').className='value '+(s.pnl>0?'positive':s.pnl<0?'negative':'');
   $('openLegs').innerHTML=`${s.legs.length} <em>/ ${c.maxLegs}</em>`;
   $('legSub').textContent=s.level?`Level ${s.level} reached`:'Waiting for first signal';
