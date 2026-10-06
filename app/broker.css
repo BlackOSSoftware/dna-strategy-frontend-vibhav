@@ -1,0 +1,30 @@
+[hidden]{display:none!important}
+.broker-trigger{display:inline-flex;align-items:center;gap:8px;padding:7px 10px}
+.broker-trigger span{font-size:10px;font-weight:800;color:#64748b}
+.broker-trigger[data-connected="true"] span{color:#25874a}
+.broker-modal{width:min(520px,calc(100vw - 28px));max-height:min(720px,calc(100vh - 28px));overflow:auto;margin:auto;padding:24px;border:1px solid #d8e2ec;border-radius:14px;background:#fff;color:#172334;box-shadow:0 24px 70px #0f172a55}
+.broker-modal::backdrop{background:#101a2cb8}
+.broker-modal-head{display:flex;align-items:flex-start;justify-content:space-between;gap:16px}
+.broker-modal-head h2{margin:5px 0 0;font:800 20px Manrope}
+.broker-close{width:30px;height:30px;border:1px solid #d8e2ec;border-radius:7px;background:#f8fafc;color:#42546b;font-size:22px;line-height:1}
+.broker-modal>p,.broker-help{color:#64748b;font-size:12px;line-height:1.5}
+.broker-modal>p#brokerStatus{margin:16px 0 12px;font-weight:700;color:#334155}
+.broker-account{display:flex;align-items:center;flex-wrap:wrap;gap:10px;color:#64748b;font-size:11px}
+.broker-account strong{color:#234d64}
+.broker-actions{display:flex;align-items:center;gap:9px;margin-top:18px}
+.broker-token-form{display:grid;grid-template-columns:1fr auto;align-items:end;gap:10px;border-top:1px solid #e4eaf1;margin-top:15px;padding-top:15px}
+.broker-token-form label{font-size:11px;font-weight:700;color:#62748b}
+.broker-token-form input{display:block;width:100%;margin-top:6px;padding:9px 10px;border:1px solid #cbd5e1;border-radius:5px;background:#fff;color:#172334;font-size:12px}
+.broker-token-form button{height:36px}
+.broker-help{margin:14px 0 0}
+.broker-redirect{display:flex;align-items:center;justify-content:space-between;gap:12px;background:#f5f9fc;border:1px solid #dce7ef;border-radius:6px;padding:9px 11px;margin-top:18px;color:#50677d;font-size:11px}
+.broker-redirect code{color:#245c77;overflow-wrap:anywhere}
+.broker-redirect button{padding:6px 10px}
+#brokerManual{margin-top:14px;color:#476078;font-size:11px}
+#brokerManual summary{cursor:pointer;font-weight:700}
+@media(max-width:600px){.broker-modal{padding:18px}.broker-redirect,.broker-token-form{display:grid;grid-template-columns:1fr}.broker-actions{flex-wrap:wrap}.broker-trigger{padding:7px}.broker-trigger span{display:none}}
+.callback-page{min-height:100vh;display:grid;place-items:center;padding:20px}
+.callback-card{max-width:500px;width:100%;padding:30px}
+.callback-card h1{font:800 23px Manrope;margin:8px 0}
+.callback-card p{color:#64748b;font-size:13px;line-height:1.5;margin-bottom:24px}
+.callback-link{display:inline-block;text-decoration:none}

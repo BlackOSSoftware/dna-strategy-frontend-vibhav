@@ -1,0 +1,71 @@
+:root{color:#172334;background:#fff}
+.rail{background:#f7f9fc;border-color:#e2e8f0}
+.brandmark{background:#dff2b8;color:#29452b}
+.brand small,.rail-section,.eyebrow{color:#64748b}
+.rail nav a{color:#506075}
+.rail nav a:hover,.rail nav a.active{background:#e8f2da;color:#30583a}
+.connection{background:#fff;border-color:#dce5eb}
+.connection small,.mini-note{color:#62748b}
+.dot,.live-dot{background:#52a568;box-shadow:0 0 0 4px #52a56822}
+.topbar{background:#fff;border-color:#e2e8f0}
+.breadcrumb,.top-actions{color:#64748b}
+.breadcrumb span{color:#a5afbd}
+.paper-pill,.badge.paper{background:#fff8e5;border-color:#e8d59a;color:#8a6619}
+.icon-btn{background:#f5f8fb;border-color:#d8e0e9;color:#526478}
+.page-heading p,.metric small,.control-row small,.activity-body small,.empty-activity,.empty-row,.small-muted{color:#64748b}
+.secondary{background:#fff;border-color:#cbd5e1;color:#334155}
+.secondary:hover{background:#f1f5f9}
+.primary{background:#b9e47a;color:#1c351f}
+.primary:hover{background:#a9da62}
+.danger{background:#fff0f1;border-color:#efc8cd;color:#b63846}
+.danger:hover{background:#ffe4e7}
+.notice{background:#eff8ff;border-color:#cce5f5;color:#287499}
+.notice b{color:#1d4f68}
+.notice p{color:#527386}
+.metric,.card{background:#fff;border-color:#dce3ec;box-shadow:0 3px 14px #1b36500a}
+.metric>span,.metric .value em,.card h2 span,.chart-meta,.field-label,.legend,.settings label{color:#62748b}
+.metric .value.positive{color:#25874a}
+.metric .value.negative{color:#c7434d}
+.chart-meta strong{color:#1e293b}
+.ohlc-row{color:#64748b}
+.ohlc-row b{color:#1e293b}
+.ohlc-row b.up,.chg.up{color:#1f8a4c}
+.ohlc-row b.down,.chg.down{color:#c44752}
+.chart-watermark{color:#64748b18}
+.option-picks label,.option-note{color:#62748b}
+.option-picks select{background:#fff;border-color:#cbd5e1;color:#172334}
+tr.grid-next td{background:#e7f6ea}
+#gridPrice{color:#172334}
+#lastPrice.up,#gridPrice.up,td.up{color:#1f8a4c}
+#lastPrice.down,#gridPrice.down,td.down{color:#c44752}
+.row-actions button,.grid-edit input{background:#fff;border-color:#cbd5e1;color:#172334}
+.row-actions button.danger{color:#b83f49}
+.chart-shell{background:linear-gradient(#e9eef4 1px,transparent 1px) 0 0/100% 25%,linear-gradient(90deg,#e9eef4 1px,transparent 1px) 0 0/12.5% 100%,#fff;border-color:#dce3ec}
+.empty-chart{color:#718096}
+.badge.neutral{background:#f1f5f9;border-color:#dbe3ec;color:#526273}
+.badge.buy{background:#e8f7ed;border-color:#b6dec2;color:#287a43}
+.badge.short{background:#fff0f1;border-color:#efc5ca;color:#b83f49}
+.segmented{background:#f3f6f9;border-color:#dce3eb}
+.segmented button{color:#526273}
+.segmented button.selected{background:#d8efc9;color:#285c34}
+.segmented button.selected.short{background:#fbe0e2;color:#a93642}
+.rule{background:#e5eaf0}
+.tag{background:#eef3f8;color:#486078}
+.green-tag{background:#e4f5e8;color:#298148}
+.pending-box{background:#f8fbff;border-color:#cad8e5;color:#50677d}
+th{color:#66788e;border-color:#e1e7ef}
+td{border-color:#edf1f5}
+.settings input,.settings select{background:#fff;border-color:#cbd5e1;color:#172334}
+.settings input::placeholder{color:#9aa8b7}
+.settings input:focus,.settings select:focus{border-color:#73b47b}
+.symbol-results{background:#fff;border-color:#d5dee8;box-shadow:0 14px 32px #1b365014}
+.symbol-results button{color:#172334;border-color:#e6edf4}
+.symbol-results button:hover{background:#f4f8fb}
+.symbol-results button small,.symbol-empty,.settings input[readonly]{color:#64748b}
+.activity-item,footer{border-color:#e4eaf1}
+.activity-icon{background:#e5f4e9;color:#398b4e}
+.activity-icon.risk{background:#ffebed;color:#c34651}
+.activity-icon.exit{background:#e7effb;color:#3e70ad}
+footer{color:#64748b}
+#toast{background:#f0f8ff;color:#1d4259;border-color:#bcd8eb;box-shadow:0 12px 30px #25344d20}
+#toast.error{background:#fff0f1;border-color:#e8b4bc;color:#9d2f3c}
