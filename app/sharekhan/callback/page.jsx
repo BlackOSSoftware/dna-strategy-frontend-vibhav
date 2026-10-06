@@ -19,7 +19,8 @@ export default function SharekhanCallback(){
     window.history.replaceState({},'',window.location.pathname);
     if(!values.state||!values.requestToken){setMessage('Sharekhan did not return a request token. Go back to the dashboard and start login again.');return;}
     const token=localStorage.getItem('gridpilot-token')||'';
-    fetch('/api/sharekhan/complete',{method:'POST',headers:{'Content-Type':'application/json',Authorization:token?`Bearer ${token}`:''},body:JSON.stringify(values)})
+    const apiBase=location.hostname==='localhost'||location.hostname==='127.0.0.1'?'':'https://dna-api.emotionlesstraders.com';
+    fetch(apiBase+'/api/sharekhan/complete',{method:'POST',headers:{'Content-Type':'application/json',Authorization:token?`Bearer ${token}`:''},body:JSON.stringify(values)})
       .then(async response=>{const data=await response.json();if(!response.ok)throw Error(data.error||'Login failed');if(!data.connected)throw Error(data.error||'Sharekhan session could not be verified');window.location.replace('/?sharekhan=connected')})
       .catch(error=>setMessage(error.message));
   },[]);

@@ -76,5 +76,8 @@ footer{color:#64748b}
 .login-card p{margin:0 0 18px;color:#64748b;font-size:13px;line-height:1.5}
 .login-card label{display:block;margin-bottom:12px;font-size:11px;font-weight:800;color:#62748b}
 .login-card input{display:block;width:100%;margin-top:6px;padding:11px 12px;border:1px solid #cbd5e1;border-radius:8px;font-size:14px;color:#172334}
-.login-card button{width:100%;margin-top:6px;padding:12px;border:0;border-radius:8px;background:#172334;color:#fff;font-weight:800}
+.login-card button[type="submit"]{width:100%;margin-top:6px;padding:12px;border:0;border-radius:8px;background:#172334;color:#fff;font-weight:800}
+.login-secret{position:relative}
+.login-secret input{padding-right:72px}
+.login-reveal{position:absolute;right:8px;bottom:7px;width:auto;margin:0;padding:5px 8px;border:0;background:transparent;color:#245c77;font-size:12px;font-weight:800}
 .login-error{color:#c7434d!important;font-weight:700}

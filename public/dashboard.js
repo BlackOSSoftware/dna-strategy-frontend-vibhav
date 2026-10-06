@@ -1,6 +1,7 @@
 const authToken=()=>localStorage.getItem('gridpilot-token')||'';
+const apiBase=()=>location.hostname==='localhost'||location.hostname==='127.0.0.1'?'':'https://dna-api.emotionlesstraders.com';
 const rawFetch=window.fetch.bind(window);
-window.fetch=(input,init={})=>{const url=typeof input==='string'?input:(input?.url||'');if(String(url).startsWith('/api/')){const headers=new Headers(init.headers||{});if(authToken())headers.set('Authorization','Bearer '+authToken());init={...init,headers};}return rawFetch(input,init).then(response=>{if(response.status===401&&!String(url).endsWith('/api/login')){localStorage.removeItem('gridpilot-token');location.reload();}return response;});};
+window.fetch=(input,init={})=>{const source=typeof input==='string'?input:(input?.url||'');const url=source.startsWith('/api/')?apiBase()+source:source;if(String(url).includes('/api/')){const headers=new Headers(init.headers||{});if(authToken())headers.set('Authorization','Bearer '+authToken());init={...init,headers};}return rawFetch(url,init).then(response=>{if(response.status===401&&!String(url).endsWith('/api/login')){localStorage.removeItem('gridpilot-token');location.reload();}return response;});};
 function liveSocketUrl(){const base=location.hostname.endsWith('emotionlesstraders.com')?'wss://dna-api.emotionlesstraders.com/ws':'ws://127.0.0.1:4000/ws';return base+'?token='+encodeURIComponent(authToken());}
 let state=null, chosen='buy', marketKey='', marketLast=null, chartBars=[], tvChart=null, candleSeries=null, volumeSeries=null, smaCloseSeries=null, smaOpenSeries=null, stopLine=null, highLine=null, lowLine=null, gridLines=[], brokerWasConnected=false, optionBoard=null, editingOrder=null;
 const $=id=>document.getElementById(id);
