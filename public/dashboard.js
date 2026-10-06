@@ -154,9 +154,9 @@ async function brokerApi(path,data){
   return result;
 }
 function renderBroker(status){
-  $('brokerStatus').textContent=status.error|| (status.connected?`Connected${status.customerId?' · Customer '+status.customerId:''}`:status.expired?'Sharekhan session expired · reconnect to continue':status.connectionStatus==='unverified'?'Session could not be verified · try again shortly':status.configured?'Credentials ready · login required':'API credentials missing on backend');
+  $('brokerStatus').textContent=status.error|| (status.connected?`Connected${status.loginId?' · '+status.loginId:''}${status.customerId?' · Customer '+status.customerId:''}`:status.expired?'Sharekhan session expired · reconnect to continue':status.connectionStatus==='unverified'?'Session could not be verified · try again shortly':status.configured?'Credentials ready · login required':'API credentials missing on backend');
   $('brokerApiHint').textContent=status.apiKeyHint||'not configured';
-  for(const name of ['apiKey','secureKey','customerId']){
+  for(const name of ['apiKey','secureKey','loginId','customerId']){
     const field=document.querySelector(`#brokerCredentialForm [name=${name}]`);
     if(field&&document.activeElement!==field)field.value=status[name]||'';
   }
