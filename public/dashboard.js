@@ -90,6 +90,10 @@ function bootGridPilot(){
   tvChart=null;candleSeries=null;volumeSeries=null;smaCloseSeries=null;smaOpenSeries=null;signalMarkers=null;stopLine=null;highLine=null;lowLine=null;gridLines=[];chartBars=[];marketKey='';marketLast=null;brokerWasConnected=false;
   $('refresh').onclick=()=>api('state').catch(e=>toast(e.message,true));
   $('chartFit').onclick=()=>tvChart?.timeScale().fitContent();
+  const zoomChart=factor=>{const scale=tvChart?.timeScale();const range=scale?.getVisibleLogicalRange();if(!range)return;const span=Math.max(8,(range.to-range.from)*factor);const center=(range.from+range.to)/2;scale.setVisibleLogicalRange({from:center-span/2,to:center+span/2});};
+  $('chartZoomIn').onclick=()=>zoomChart(0.72);
+  $('chartZoomOut').onclick=()=>zoomChart(1.4);
+  for(const id of ['chartZoomIn','chartZoomOut'])$(id).onmousedown=event=>event.preventDefault();
   connectLive();
   refreshBrokerBook();
   bootTimers.push(setInterval(refreshBrokerBook,2000));
