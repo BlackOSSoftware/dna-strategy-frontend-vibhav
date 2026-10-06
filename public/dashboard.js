@@ -107,9 +107,11 @@ function bootGridPilot(){
   $('gridBody').onclick=event=>{const button=event.target.closest('button');if(!button)return;const row=gridRows(optionBoard).find(item=>item.level===Number(button.dataset.level));if(button.dataset.order==='cancel'){editingOrder=null;paintGrid(optionBoard);return;}if(button.dataset.order==='edit'){editingOrder=row;paintGrid(optionBoard);return;}if(button.dataset.order==='save'){const tr=button.closest('tr');orderAction('edit',row,{entry:tr.querySelector('[name=entry]').value,target:tr.querySelector('[name=target]').value,stop:tr.querySelector('[name=stop]').value,quantity:tr.querySelector('[name=quantity]').value});return;}orderAction(button.dataset.order,row);};
   $('buyDirection').onclick=()=>setDirection('buy');$('shortDirection').onclick=()=>setDirection('short');
   for(const name of ['optionMoneyness','optionDepth','optionRight'])document.querySelector(`[name="${name}"]`).addEventListener('change',()=>refreshOption());
-  $('start').onclick=()=>action('start',{direction:chosen,mode:'paper',spot:signalPrice(chosen==='short'?'sell':'buy')||marketLast});
+  const strategySpot=()=>signalPrice(chosen==='short'?'sell':'buy')||marketLast;
+  $('start').onclick=()=>action('start',{direction:chosen,mode:'paper',spot:strategySpot()});
+  $('startLive').onclick=()=>{if(!confirm('Start live trading? Entry, target, stop, and trail orders will go to Sharekhan.'))return;action('start',{direction:chosen,mode:'live',spot:strategySpot()});};
   $('stop').onclick=()=>action('stop');
-  $('kill').onclick=()=>{if(confirm('Square off all paper positions at last price and kill this strategy?'))action('kill')};
+  $('kill').onclick=()=>{if(confirm('Kill the strategy? Open live positions are squared off at Sharekhan and pending orders are cancelled.'))action('kill')};
   $('newDay').onclick=()=>{if(confirm('Reset strategy for a new trading day? This clears the current dashboard state.'))action('new-day')};
   $('settingsForm').onsubmit=e=>{e.preventDefault();const d=Object.fromEntries(new FormData(e.target));action('config',d)};
   bootTimers.push(setInterval(()=>{if(state?.config?.scripCode)loadMarket(false);},60000));
