@@ -49,15 +49,15 @@ export default function DashboardClient({ markup }) {
     }
     const start = () => window.bootGridPilot?.();
     const existing = document.querySelector('script[data-gridpilot]');
-    if (existing?.dataset.version === '16' && window.bootGridPilot) {
+    if (existing?.dataset.version === '17' && window.bootGridPilot) {
       start();
       return;
     }
     existing?.remove();
     const script = document.createElement('script');
-    script.src = '/dashboard.js?v=16';
+    script.src = '/dashboard.js?v=17';
     script.dataset.gridpilot = '1';
-    script.dataset.version = '16';
+    script.dataset.version = '17';
     script.addEventListener('load', start);
     document.body.appendChild(script);
   }, [phase, markup]);
