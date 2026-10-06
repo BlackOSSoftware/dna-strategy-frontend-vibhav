@@ -138,7 +138,7 @@ function bootGridPilot(){
   };
   refreshBroker();
   bootTimers.push(setInterval(refreshBroker,30000));
-  $('brokerCallbackUrl').textContent=window.location.origin+'/sharekhan/callback';
+  $('brokerCallbackUrl').textContent=(location.hostname==='localhost'||location.hostname==='127.0.0.1'?'https://strategy-dna.emotionlesstraders.com':location.origin)+'/sharekhan/callback';
   $('brokerCopyCallback').onclick=async()=>{try{await navigator.clipboard.writeText($('brokerCallbackUrl').textContent);toast('Callback URL copied')}catch{toast('Could not copy URL; select it manually',true)}};
   if(new URLSearchParams(window.location.search).get('sharekhan')==='connected'){
     toast('Sharekhan connected');

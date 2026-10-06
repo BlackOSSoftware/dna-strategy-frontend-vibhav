@@ -12,9 +12,15 @@ function callbackValues(){
   return {state,requestToken:''};
 }
 
+const liveCallback='https://strategy-dna.emotionlesstraders.com/sharekhan/callback';
+
 export default function SharekhanCallback(){
   const [message,setMessage]=useState('Completing Sharekhan login…');
   useEffect(()=>{
+    if(location.hostname==='localhost'||location.hostname==='127.0.0.1'){
+      window.location.replace(liveCallback+location.search);
+      return;
+    }
     const values=callbackValues();
     window.history.replaceState({},'',window.location.pathname);
     if(!values.state||!values.requestToken){setMessage('Sharekhan did not return a request token. Go back to the dashboard and start login again.');return;}
