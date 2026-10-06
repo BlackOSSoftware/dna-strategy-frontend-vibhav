@@ -129,6 +129,7 @@ function bootGridPilot(){
     }catch(e){toast(e.message,true)}
   };
   $('brokerLogout').onclick=async()=>{try{renderBroker(await brokerApi('logout'));toast('Sharekhan disconnected')}catch(e){toast(e.message,true)}};
+  $('brokerCredentialForm').onsubmit=async event=>{event.preventDefault();const data=Object.fromEntries(new FormData(event.target));try{renderBroker(await brokerApi('credentials',data));event.target.apiKey.value='';event.target.secureKey.value='';toast('Sharekhan credentials saved')}catch(e){toast(e.message,true)}};
   $('brokerToken').onchange=()=>{try{const u=new URL($('brokerToken').value);const state=u.searchParams.get('state');if(state)$('brokerState').value=state}catch{}};
   $('brokerTokenForm').onsubmit=async e=>{
     e.preventDefault();
@@ -155,6 +156,8 @@ async function brokerApi(path,data){
 function renderBroker(status){
   $('brokerStatus').textContent=status.error|| (status.connected?`Connected${status.customerId?' · Customer '+status.customerId:''}`:status.expired?'Sharekhan session expired · reconnect to continue':status.connectionStatus==='unverified'?'Session could not be verified · try again shortly':status.configured?'Credentials ready · login required':'API credentials missing on backend');
   $('brokerApiHint').textContent=status.apiKeyHint||'not configured';
+  const customerField=document.querySelector('#brokerCredentialForm [name=customerId]');
+  if(customerField&&document.activeElement!==customerField)customerField.value=status.customerId||'';
   $('brokerBadge').textContent=status.connected?'CONNECTED':status.expired?'EXPIRED':status.connectionStatus==='unverified'?'UNVERIFIED':status.configured?'READY':'CHECK CREDENTIALS';
   $('brokerBadge').className='badge '+(status.connected?'buy':status.expired?'short':'neutral');
   $('brokerTriggerStatus').textContent=status.connected?'Connected':status.expired?'Expired':status.configured?'Connect':'Setup needed';

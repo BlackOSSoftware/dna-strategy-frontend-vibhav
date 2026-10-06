@@ -11,6 +11,10 @@
 .broker-modal>p#brokerStatus{margin:16px 0 12px;font-weight:700;color:#334155}
 .broker-account{display:flex;align-items:center;flex-wrap:wrap;gap:10px;color:#64748b;font-size:11px}
 .broker-account strong{color:#234d64}
+.broker-credentials{display:grid;gap:10px;margin-top:16px}
+.broker-credentials label{font-size:11px;font-weight:700;color:#62748b}
+.broker-credentials input{display:block;width:100%;margin-top:6px;padding:9px 10px;border:1px solid #cbd5e1;border-radius:5px;background:#fff;color:#172334;font-size:12px}
+.broker-credentials button{justify-self:start}
 .broker-actions{display:flex;align-items:center;gap:9px;margin-top:18px}
 .broker-token-form{display:grid;grid-template-columns:1fr auto;align-items:end;gap:10px;border-top:1px solid #e4eaf1;margin-top:15px;padding-top:15px}
 .broker-token-form label{font-size:11px;font-weight:700;color:#62748b}
