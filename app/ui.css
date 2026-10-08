@@ -56,3 +56,6 @@ body,button,input,select{font-family:var(--font-sans),"Segoe UI",sans-serif}
   .broker-trigger span{display:inline}
   footer{padding:14px}
 }
+.chart-shell.option-chart-shell{height:320px;margin:0 0 12px}
+.option-chart-shell #optionChart{position:absolute;inset:0;z-index:1}
+.option-level-legend{margin:0 0 12px}
