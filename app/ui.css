@@ -59,3 +59,13 @@ body,button,input,select{font-family:var(--font-sans),"Segoe UI",sans-serif}
 .chart-shell.option-chart-shell{height:320px;margin:0 0 12px}
 .option-chart-shell #optionChart{position:absolute;inset:0;z-index:1}
 .option-level-legend{margin:0 0 12px}
+.control-tabs{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:4px;margin:0 0 12px;padding:4px;border-radius:10px;background:#f3f6f9}
+.control-tabs button{border:0;background:transparent;border-radius:8px;min-height:34px;padding:6px 2px;color:#526273;font-size:12px;font-weight:700}
+.control-tabs button.selected{background:#fff;color:#173024;box-shadow:0 1px 2px #0f172a14}
+.control-panel[hidden]{display:none !important}
+.control-card .settings-grid{grid-template-columns:1fr 1fr;gap:10px}
+.control-card .save-btn{width:100%}
+.lower-grid.bottom-grid{grid-template-columns:minmax(0,1fr)}
+@media(max-width:640px){
+  .control-card .settings-grid,.control-tabs{grid-template-columns:1fr 1fr}
+}

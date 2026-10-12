@@ -5,6 +5,12 @@ const config = {
   async rewrites() {
     return [{ source: '/api/:path*', destination: `${backend}/api/:path*` }];
   },
+  async headers() {
+    return [
+      {source:'/', headers:[{key:'Cache-Control', value:'no-store'}]},
+      {source:'/dashboard.js', headers:[{key:'Cache-Control', value:'no-cache'}]}
+    ];
+  },
 };
 
 export default config;
