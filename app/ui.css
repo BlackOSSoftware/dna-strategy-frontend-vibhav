@@ -51,18 +51,23 @@ body,button,input,select{font-family:var(--font-sans),"Segoe UI",sans-serif}
 .segmented button{display:inline-flex;align-items:center;justify-content:center;gap:6px;min-height:38px;font-size:12px}
 .control-card .field-label{display:block;margin:14px 0 8px}
 .control-panel[data-panel="option"] > .field-label:first-child{margin-top:0}
-.side-plans{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin:0 0 12px}
+.side-plans{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin:0}
+.signal-board{margin:2px 0 14px}
+.control-panel[data-panel="option"] .option-picks{grid-template-columns:1fr 1fr}
 .side-plan{margin:0;padding:10px 12px 12px;border:1px solid #d5e0ea;border-radius:10px;background:#f8fafc}
 .side-plan[hidden]{display:none!important}
 .side-plan legend{padding:0 4px;font-size:12px;font-weight:800;color:#173024}
 .side-plan label{display:block;margin-top:8px;color:#526273;font-size:11px;font-weight:700}
-.side-plan select{display:block;width:100%;margin-top:4px}
-.mode-switch{margin:0 0 10px}
+.side-plan select{display:block;width:100%;margin-top:4px;min-height:36px}
+.signal-row{display:grid;grid-template-columns:1fr 1fr;gap:8px}
+.signal-row label{margin-top:0}
+.mode-switch{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));margin:0 0 10px}
+.mode-switch button{width:100%}
 .side-grid{margin-top:8px}
 .side-grid-head{display:flex;align-items:baseline;justify-content:space-between;gap:12px;margin:12px 0 8px}
 .side-grid-head h3{margin:0;font-size:15px}
 .side-grid-head span{color:#526273;font-size:12px;font-weight:700}
-@media(max-width:640px){.side-plans{grid-template-columns:1fr}}
+@media(max-width:640px){.side-plans,.signal-row{grid-template-columns:1fr}.mode-switch{grid-template-columns:repeat(3,minmax(0,1fr));flex-direction:row}}
 .card{border-radius:12px}
 .metric{border-radius:12px}
 .account-strip div{min-width:0}
