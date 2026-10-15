@@ -1,15 +1,57 @@
 body,button,input,select{font-family:var(--font-sans),"Segoe UI",sans-serif}
+.main-grid{grid-template-columns:minmax(0,1fr)}
+.activity-panel[hidden]{display:none}
+.heading-actions{flex-wrap:wrap}
+.view-dashboard .page-heading{gap:12px;margin-bottom:16px}
+.view-dashboard .metrics{width:100%;margin:0;gap:8px}
+.view-dashboard .metric{min-height:70px;padding:10px 14px}
+.view-dashboard .metric .value{font-size:19px;margin:4px 0 0}
+.header-details{display:none;width:100%}
+.view-dashboard .header-details{display:block}
+.header-details summary{width:max-content;max-width:100%;cursor:pointer;color:#526478;font-size:12px;font-weight:700}
+.header-details[open] summary{margin-bottom:8px}
+.header-details .account-strip{margin:0}
+.view-dashboard .main-grid,.view-dashboard #activityPanel,.view-dashboard #activityToggle,.view-dashboard #newDay,.view-dashboard #kill{display:none}
+#chartsToggle{display:none}
+.view-dashboard #chartsToggle{display:inline-flex}
+.overview-chart-row{display:none}
+.overview-chart-row[hidden]{display:none!important}
+.view-dashboard .overview-chart-row{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:16px;align-items:stretch;margin-bottom:16px}
+.overview-chart-row>*{min-width:0}
+.overview-chart-row .card{height:100%;margin:0}
+.overview-chart-row .chart-shell{height:320px}
+#chart .legend{display:none}
+@media(max-width:900px){.view-dashboard .overview-chart-row{grid-template-columns:1fr}}
+@media(max-width:900px){.view-dashboard .metrics{grid-template-columns:repeat(2,minmax(0,1fr))}}
+.view-strategy .metrics,.view-strategy #chart,.view-strategy #optionGrid,.view-strategy #optionChartCard,.view-strategy #brokerBook,.view-strategy #activityPanel,.view-strategy #activityToggle{display:none}
+.view-activity .metrics,.view-activity .main-grid,.view-activity #optionGrid,.view-activity #optionChartCard,.view-activity #brokerBook,.view-activity #activityToggle,.view-activity #newDay,.view-activity #kill,.view-activity .account-strip{display:none}
 .page-heading h1,.card h2,.brand strong,.metric .value,.account-strip b,#gridPrice,.login-card h1{font-family:var(--font-display),"Segoe UI",sans-serif}
 .ico{width:16px;height:16px;flex:0 0 auto;display:block}
 .brandmark .ico{width:18px;height:18px}
 .rail nav a{display:flex;align-items:center;gap:10px}
 .heading-actions,.control-buttons,.top-actions{display:flex;align-items:center;gap:8px}
 .heading-actions button,.control-buttons button,.secondary,.primary,.danger,.icon-btn{display:inline-flex;align-items:center;justify-content:center;gap:7px}
+.strategy-settings-modal{width:min(760px,calc(100vw - 28px));max-height:calc(100vh - 28px);padding:0}
+.strategy-settings-modal #settings{display:block;margin:0;border:0;border-radius:14px;padding:24px 28px}
+.strategy-settings-modal .card-head{padding-right:40px}
+.strategy-settings-close{position:absolute;top:20px;right:20px;z-index:1}
+@media(max-width:600px){.strategy-settings-modal #settings{padding:20px 16px}.strategy-settings-close{top:16px;right:16px}}
+.option-preview{margin:14px 0;padding:14px;border:1px solid #c9dccb;border-radius:10px;background:#f4faf4;color:#173024}
+.option-preview>strong{display:block;font-size:13px}
+.option-preview>p{margin:5px 0 12px;color:#496754;font-size:11px}
+.option-preview-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:8px}
+.option-preview-grid>div{min-width:0;padding:9px;border:1px solid #dbe9dc;border-radius:7px;background:#fff}
+.option-preview-grid span,.option-preview-grid b{display:block}
+.option-preview-grid span{color:#668070;font-size:10px}
+.option-preview-grid b{margin-top:3px;overflow-wrap:anywhere;font-size:12px}
+.option-preview>small{display:block;margin-top:10px;color:#496754;line-height:1.4}
 .control-buttons{flex-wrap:wrap}
 .control-buttons button{min-height:40px}
 .icon-btn{width:36px;height:36px;padding:0}
 .segmented button{display:inline-flex;align-items:center;justify-content:center;gap:6px;min-height:38px;font-size:12px}
 .control-card .field-label{display:block;margin:14px 0 8px}
+.control-panel[data-panel="option"] > .field-label:first-child{margin-top:0}
+.control-panel[data-panel="option"] .option-picks{margin-top:0}
 .card{border-radius:12px}
 .metric{border-radius:12px}
 .account-strip div{min-width:0}
@@ -20,6 +62,24 @@ body,button,input,select{font-family:var(--font-sans),"Segoe UI",sans-serif}
 .loader-card strong{font-family:var(--font-display),"Segoe UI",sans-serif;font-size:16px}
 .loader-card span:last-child{color:#64748b;font-size:12px}
 .spinner{width:28px;height:28px;border:3px solid #d7e4c8;border-top-color:#3d8a4d;border-radius:50%;animation:spin .7s linear infinite}
+.bull-loader{display:block;width:150px;height:105px;overflow:visible}
+.bull-shadow{fill:#dbe6d5;transform-box:fill-box;transform-origin:center;animation:bull-shadow 650ms ease-in-out infinite alternate}
+.bull-run{animation:bull-bob 650ms ease-in-out infinite alternate}
+.bull-body,.bull-neck,.bull-head{fill:#7a4a2b}
+.bull-neck{fill:#8e5831}
+.bull-head{fill:#945d35}
+.bull-muzzle{fill:#b98058}
+.bull-eye{fill:#1c211a}
+.bull-horn{fill:none;stroke:#e7d6af;stroke-width:5;stroke-linecap:round;stroke-linejoin:round}
+.bull-tail{fill:none;stroke:#6a4028;stroke-width:5;stroke-linecap:round;animation:bull-tail 650ms ease-in-out infinite alternate}
+.bull-leg{fill:none;stroke:#613e29;stroke-width:8;stroke-linecap:round;stroke-linejoin:round;transform-box:fill-box;transform-origin:center top}
+.bull-leg-back{animation:bull-step 450ms ease-in-out infinite alternate}
+.bull-leg-front{animation:bull-step 450ms ease-in-out infinite alternate-reverse}
+@keyframes bull-bob{from{transform:translateY(1px)}to{transform:translateY(-5px)}}
+@keyframes bull-step{from{transform:skewX(-7deg)}to{transform:skewX(7deg)}}
+@keyframes bull-tail{from{transform:rotate(-5deg)}to{transform:rotate(7deg)}}
+@keyframes bull-shadow{from{transform:scaleX(1)}to{transform:scaleX(.85)}}
+@media(prefers-reduced-motion:reduce){.bull-loader *{animation:none!important}}
 .empty-chart{display:grid;place-items:center;align-content:center;gap:10px;text-align:center;padding:16px}
 @keyframes spin{to{transform:rotate(360deg)}}
 .chart-meta,.card-head,.ohlc-row{flex-wrap:wrap}
@@ -56,10 +116,11 @@ body,button,input,select{font-family:var(--font-sans),"Segoe UI",sans-serif}
   .broker-trigger span{display:inline}
   footer{padding:14px}
 }
-.chart-shell.option-chart-shell{height:320px;margin:0 0 12px}
+.chart-shell.option-chart-shell{height:320px;margin:0}
 .option-chart-shell #optionChart{position:absolute;inset:0;z-index:1}
-.option-level-legend{margin:0 0 12px}
-.control-tabs{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:4px;margin:0 0 12px;padding:4px;border-radius:10px;background:#f3f6f9}
+.option-chart-toolbar{display:flex;align-items:center;justify-content:flex-end;gap:10px;margin:0 0 10px;flex-wrap:wrap}
+.option-grid-card > .table-wrap{margin-bottom:18px}
+.control-tabs{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:4px;margin:0 0 12px;padding:4px;border-radius:10px;background:#f3f6f9}
 .control-tabs button{border:0;background:transparent;border-radius:8px;min-height:34px;padding:6px 2px;color:#526273;font-size:12px;font-weight:700}
 .control-tabs button.selected{background:#fff;color:#173024;box-shadow:0 1px 2px #0f172a14}
 .control-panel[hidden]{display:none !important}
