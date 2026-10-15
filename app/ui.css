@@ -116,7 +116,10 @@ body,button,input,select{font-family:var(--font-sans),"Segoe UI",sans-serif}
   .broker-trigger span{display:inline}
   footer{padding:14px}
 }
+.chart-shell{isolation:isolate}
 .chart-shell.option-chart-shell{height:320px;margin:0}
+.empty-chart{z-index:60}
+#toast{z-index:70}
 .option-chart-shell #optionChart{position:absolute;inset:0;z-index:1}
 .option-chart-toolbar{display:flex;align-items:center;justify-content:flex-end;gap:10px;margin:0 0 10px;flex-wrap:wrap}
 .option-grid-card > .table-wrap{margin-bottom:18px}
