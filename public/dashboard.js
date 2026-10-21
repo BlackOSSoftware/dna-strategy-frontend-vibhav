@@ -30,28 +30,35 @@ function trailLabel(row){if(row.trailText)return row.trailText;const cfg=sideCon
 function orderButtons(row){const level=row.level;const right=row.right||'';const mark=` data-level="${level}" data-right="${right}"`;if(row.status==='closed')return '';const send=`<button type="button" data-order="place"${mark}>Send live</button>`;if(row.status==='pending')return `${row.brokerOrderId?'':send}<button type="button" data-order="unplace"${mark}>Unplace</button>`;if(row.status==='open')return send;return `${send}<button type="button" data-order="edit"${mark}>Edit</button><button type="button" class="danger" data-order="remove"${mark}>Remove</button>`;}
 function showOptionChartMessage(message){const el=$('optionChartMessage');if(!el)return;el.style.display=message?'grid':'none';el.textContent=message||'';}
 function ensureOptionChart(){if(optionChart||!window.LightweightCharts||!$('optionChart'))return;const library=window.LightweightCharts;optionChart=library.createChart($('optionChart'),{autoSize:true,layout:{background:{color:'#ffffff'},textColor:'#62748b',fontFamily:'DM Sans, Arial, sans-serif'},grid:{vertLines:{color:'#d5deea'},horzLines:{color:'#d5deea'}},rightPriceScale:{borderColor:'#dce3ec'},timeScale:{borderColor:'#dce3ec',timeVisible:true,secondsVisible:false,rightOffset:4,barSpacing:8,minBarSpacing:3,tickMarkFormatter:istStamp},localization:{locale:'en-IN',timeFormatter:istStamp},crosshair:{mode:library.CrosshairMode.Normal,vertLine:{color:'#94a3b8',width:1,labelBackgroundColor:'#334155'},horzLine:{color:'#94a3b8',width:1,labelBackgroundColor:'#334155'}}});optionSeries=optionChart.addSeries(library.CandlestickSeries,{upColor:'#3b9c60',downColor:'#d85d68',borderVisible:false,wickUpColor:'#3b9c60',wickDownColor:'#d85d68',priceLineVisible:true,lastValueVisible:true});}
+const optionChartCache=new Map();
+const strategyChartCache=new Map();
+function paintOptionBars(){if(!optionSeries)return;optionSeries.setData(optionBars.map(candle=>({time:candle.time,open:candle.open,high:candle.high,low:candle.low,close:candle.close})));showOptionLatest();}
 async function loadOptionChart(board){
   if(isStrategyView()||!$('optionChart')||$('overviewCharts')?.hidden)return;
   if(!board?.scripCode){showOptionChartMessage('Strike chart loads after the option is detected');return;}
   const interval=optionChartInterval;
   const key=`${board.exchange||'NF'}:${board.scripCode}:${interval}`;
   if(optionChartPendingKey===key)return;
+  const cached=optionChartCache.get(key);
   const requestId=++optionChartRequestId;
   try{
     await loadChartLibrary();
     if(requestId!==optionChartRequestId)return;
     ensureOptionChart();
-    if(optionChartKey!==key||Date.now()-optionChartAt>60000){
+    if(cached&&Date.now()-cached.at<=60000){
+      optionBars=cached.bars;optionChartKey=key;optionChartAt=cached.at;paintOptionBars();
+    }else{
       optionChartPendingKey=key;
-      showOptionChartMessage(`Loading ${interval.replace('minute','-minute')} option candles…`);
+      if(cached){optionBars=cached.bars;optionChartKey=key;optionChartAt=cached.at;paintOptionBars();}
+      else showOptionChartMessage(`Loading ${interval.replace('minute','-minute')} option candles…`);
       const params=new URLSearchParams({exchange:board.exchange||'NF',scripCode:String(board.scripCode),symbol:board.tradingSymbol||'NIFTY',interval});
       const response=await fetch(`/api/market?${params}`);
       const data=await response.json();
       if(requestId!==optionChartRequestId)return;
       if(!response.ok)throw Error(data.error||'Strike chart failed');
       optionBars=data.candles||[];
-      optionSeries.setData(optionBars.map(candle=>({time:candle.time,open:candle.open,high:candle.high,low:candle.low,close:candle.close})));
-      showOptionLatest();
+      optionChartCache.set(key,{at:Date.now(),bars:optionBars});
+      paintOptionBars();
       optionChartKey=key;
       optionChartAt=Date.now();
     }
@@ -171,12 +178,17 @@ function syncRangeLines(candles){if(!candleSeries||!candles.length)return;if(hig
 async function loadMarket(resetView=false){const config=state?.config;if(!config?.scripCode){showChartMessage('Choose a symbol from the search list to load the chart');return;}if(isStrategyView()||$('overviewCharts')?.hidden){await loadMarketForStrategy(config,resetView);return;}if(resetView||!tvChart)showChartMessage('Loading Angel One '+chartInterval.replace('minute','-minute')+' candles…');try{await loadChartLibrary();ensureChart();const response=await fetch(`/api/market?exchange=${encodeURIComponent(config.exchange)}&scripCode=${encodeURIComponent(config.scripCode)}&symbol=${encodeURIComponent(config.symbol||'')}&interval=${encodeURIComponent(chartInterval)}`);const data=await response.json();if(!response.ok)throw Error(data.error||'Chart data failed');const candles=data.candles||[];chartBars=candles;$('chartWatermark').textContent=config.symbol||'NIFTY';candleSeries.setData(candles.map(candle=>({time:candle.time,open:candle.open,high:candle.high,low:candle.low,close:candle.close})));const volumeBars=candles.filter(candle=>Number(candle.volume)>0);volumeSeries.setData(volumeBars.map(candle=>({time:candle.time,value:candle.volume,color:candle.close>=candle.open?'rgba(59,156,96,0.45)':'rgba(216,93,104,0.45)'})));candleSeries.priceScale().applyOptions({scaleMargins:{top:0.08,bottom:volumeBars.length?0.28:0.08}});tvChart.priceScale('volume').applyOptions({scaleMargins:{top:volumeBars.length?0.76:1,bottom:0},visible:volumeBars.length>0});smaCloseSeries.setData(candles.filter(candle=>candle.smaClose!=null).map(candle=>({time:candle.time,value:candle.smaClose})));smaOpenSeries.setData(candles.filter(candle=>candle.smaOpen!=null).map(candle=>({time:candle.time,value:candle.smaOpen})));paintSignals(candles);const last=data.last;marketLast=last?.close??null;if(last){candleSeries.applyOptions({priceLineColor:last.close>=last.open?'#3b9c60':'#d85d68'});paintHeader(last);}paintBar(last);syncRangeLines(candles);syncStopLine(state?.sharedStop);watchChartFollow();if(lastNifty)paintLiveCandle(lastNifty);if(resetView)chartFollow=true;if(chartFollow)showLatest();$('emptyChart').style.display='none';refreshOption();}catch(error){if(resetView||!tvChart)marketLast=null;showChartMessage(error.message);}}
 async function loadMarketForStrategy(config,resetView){
   try{
-    const params=new URLSearchParams({exchange:config.exchange||'NC',scripCode:String(config.scripCode),symbol:config.symbol||'',interval:config.signalInterval||'15minute'});
+    const frame=config.signalInterval||'15minute';
+    const cacheKey=`${config.exchange||'NC'}:${config.scripCode}:${frame}`;
+    const cached=strategyChartCache.get(cacheKey);
+    if(cached&&Date.now()-cached.at<=45000){chartBars=cached.candles;marketLast=Number(lastNifty??cached.lastClose)||null;refreshOption();return;}
+    const params=new URLSearchParams({exchange:config.exchange||'NC',scripCode:String(config.scripCode),symbol:config.symbol||'',interval:frame});
     const response=await fetch(`/api/market?${params}`);
     const data=await response.json();
     if(!response.ok)throw Error(data.error||'Market data failed');
     chartBars=data.candles||[];
     marketLast=Number(lastNifty??data.last?.close)||null;
+    strategyChartCache.set(cacheKey,{at:Date.now(),candles:chartBars,lastClose:data.last?.close??null});
     refreshOption();
   }catch(error){if(resetView)toast(error.message,true);}
 }
@@ -217,7 +229,7 @@ function bootGridPilot(){
   bootTimers.forEach(clearInterval);bootTimers=[];
   setChartsVisible(localStorage.getItem('gridpilot-show-charts')==='true');
   $('chartsToggle').onclick=()=>{const open=$('overviewCharts').hidden;localStorage.setItem('gridpilot-show-charts',String(open));setChartsVisible(open);};
-  tvChart=null;candleSeries=null;volumeSeries=null;smaCloseSeries=null;smaOpenSeries=null;signalMarkers=null;stopLine=null;highLine=null;lowLine=null;buyStrikeLine=null;sellStrikeLine=null;gridLines=[];chartBars=[];marketKey='';marketLast=null;brokerWasConnected=false;optionChart=null;optionSeries=null;optionBars=[];optionChartKey='';optionChartAt=0;optionChartRequestId=0;optionChartPendingKey='';optionChartInterval='15minute';clearTimeout(optionChartRetry);optionChartRetry=0;
+  tvChart=null;candleSeries=null;volumeSeries=null;smaCloseSeries=null;smaOpenSeries=null;signalMarkers=null;stopLine=null;highLine=null;lowLine=null;buyStrikeLine=null;sellStrikeLine=null;gridLines=[];chartBars=[];marketKey='';marketLast=null;brokerWasConnected=false;optionChart=null;optionSeries=null;optionBars=[];optionChartKey='';optionChartAt=0;optionChartRequestId=0;optionChartPendingKey='';optionChartCache.clear();strategyChartCache.clear();optionChartInterval='15minute';clearTimeout(optionChartRetry);optionChartRetry=0;
   $('refresh').onclick=async()=>{setLoader(true,'Refreshing the dashboard…');try{await api('state');}catch(e){toast(e.message,true);}finally{setLoader(false);}};
   $('activityToggle').onclick=()=>setActivityOpen($('activityPanel').hidden,true);
   if(document.querySelector('.view-activity'))setActivityOpen(true);
