@@ -83,6 +83,8 @@ body,button,input,select{font-family:var(--font-sans),"Segoe UI",sans-serif}
 .loader-card strong{font-family:var(--font-display),"Segoe UI",sans-serif;font-size:16px}
 .loader-card span:last-child{color:#64748b;font-size:12px}
 .spinner{width:28px;height:28px;border:3px solid #d7e4c8;border-top-color:#3d8a4d;border-radius:50%;animation:spin .7s linear infinite}
+.follow-toggle{white-space:nowrap}
+.follow-toggle.following{border-color:#ea580c;background:#fff7ed;color:#9a3412;font-weight:700}
 .signal-info-line{margin:12px 0 6px;padding:8px 12px;border:1px solid #d8e2ec;border-radius:10px;background:#f4f8fd;color:#22344d;font-size:13px;font-weight:600}
 .signal-info-line:empty{display:none}
 .signal-info-line.buy{border-color:#bfe6cc;background:#effaf2;color:#14532d}

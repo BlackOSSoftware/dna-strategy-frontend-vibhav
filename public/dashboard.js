@@ -132,6 +132,7 @@ function render(){if(!state)return;const s=state,c=s.config;
   if($('modeExisting')){$('modeExisting').classList.toggle('selected',shownTrade==='existing');$('modeExisting').disabled=s.status==='running';}
   if($('modeLive')){$('modeLive').classList.toggle('selected',shownTrade==='live');$('modeLive').disabled=s.status==='running';}
   paintSignalBanner();
+  const followBtn=$('followToggle');if(followBtn){const locked=state?.config?.signalLock!==false;followBtn.textContent=locked?'🔒 Trade locked':'🔓 Following signal';followBtn.classList.toggle('following',!locked);followBtn.title=locked?'Signal badalne par bhi chal raha trade chalega. Unlock karne ke liye click karo.':'Naya signal aate hi working grid naye signal par shift ho jayegi; purana trade broker par chhod diya jayega.';}
   if(nextSignalWaiting())paintWaitingNext();
   else if(s.option?.scripCode&&s.direction)paintOption(s.option);
   $('start').disabled=s.status==='running';if($('startLive'))$('startLive').disabled=s.status==='running';$('stop').disabled=s.status!=='running';
@@ -261,6 +262,7 @@ function bootGridPilot(){
   document.querySelector('[name="signalInterval"]')?.addEventListener('change',async e=>{if(state?.status==='running'){toast('Stop the strategy before changing settings',true);e.target.value=state.config?.signalInterval||'15minute';return;}const f=$('settingsForm');try{await api('config',{exchange:f.exchange?.value||state.config.exchange,productType:f.productType?.value||state.config.productType,symbol:f.symbol?.value||state.config.symbol,scripCode:f.scripCode?.value||state.config.scripCode,signalInterval:e.target.value});toast('Signal timeframe saved · '+e.target.selectedOptions[0].textContent);refreshOption();loadMarket(true);}catch(err){toast(err.message,true);e.target.value=state?.config?.signalInterval||'15minute';}});
   const strategySpot=()=>tradeChoice==='existing'?(state?.option?.spot||marketLast):(signalPrice(chosen==='short'?'sell':'buy')||marketLast);
   const startBody=broker=> ({direction:chosen,mode:broker,tradeMode:tradeChoice,spot:strategySpot()});
+  if($('followToggle'))$('followToggle').onclick=async()=>{const locked=state?.config?.signalLock!==false;try{state=await api('signal-lock',{locked:!locked});render();refreshOption();toast(!locked?'🔓 Following signal: naya signal aate hi grid shift ho jayega':'🔒 Trade locked: chal raha trade hi chalega');}catch(e){toast(e.message,true);}};
   $('start').onclick=()=>{if(state?.status==='running'){toast('Strategy is already running. Stop it before starting again.',true);return;}action('start',startBody('paper'));};
   $('startLive').onclick=()=>{if(state?.status==='running'){toast('Strategy is already running. Stop it before starting again.',true);return;}const nextSignal=tradeChoice==='live';if(!confirm(nextSignal?'Waiting for the next signal. When a buy or sell signal forms, that new trade is sent to Sharekhan.':'Started with the current signal. Orders for the option already selected are sent to Sharekhan.'))return;action('start',startBody('live'));};
   $('stop').onclick=()=>action('stop');
