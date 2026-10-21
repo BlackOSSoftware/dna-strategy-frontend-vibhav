@@ -29,7 +29,12 @@ body,button,input,select{font-family:var(--font-sans),"Segoe UI",sans-serif}
 .ico{width:16px;height:16px;flex:0 0 auto;display:block}
 .brandmark .ico{width:18px;height:18px}
 .rail nav a{display:flex;align-items:center;gap:10px}
-.heading-actions,.control-buttons,.top-actions{display:flex;align-items:center;gap:8px}
+.heading-actions,.control-buttons,.top-actions,.strategy-run{display:flex;align-items:center;gap:8px}
+.strategy-run,.strategy-actions{flex-wrap:wrap}
+.strategy-actions{display:flex;align-items:center;gap:8px;padding:6px;border:1px solid #d5deea;border-radius:12px;background:#f8fafc}
+.strategy-run button,.strategy-actions > button{min-height:36px;width:auto}
+.strategy-settings-modal .card-head{display:flex;align-items:center;justify-content:space-between;gap:12px;flex-wrap:wrap}
+.strategy-settings-modal .strategy-run{margin-left:auto}
 .heading-actions button,.control-buttons button,.secondary,.primary,.danger,.icon-btn{display:inline-flex;align-items:center;justify-content:center;gap:7px}
 .strategy-settings-modal{width:min(760px,calc(100vw - 28px));max-height:calc(100vh - 28px);padding:0}
 .strategy-settings-modal #settings{display:block;margin:0;border:0;border-radius:14px;padding:24px 28px}
@@ -78,24 +83,18 @@ body,button,input,select{font-family:var(--font-sans),"Segoe UI",sans-serif}
 .loader-card strong{font-family:var(--font-display),"Segoe UI",sans-serif;font-size:16px}
 .loader-card span:last-child{color:#64748b;font-size:12px}
 .spinner{width:28px;height:28px;border:3px solid #d7e4c8;border-top-color:#3d8a4d;border-radius:50%;animation:spin .7s linear infinite}
-.bull-loader{display:block;width:150px;height:105px;overflow:visible}
-.bull-shadow{fill:#dbe6d5;transform-box:fill-box;transform-origin:center;animation:bull-shadow 650ms ease-in-out infinite alternate}
-.bull-run{animation:bull-bob 650ms ease-in-out infinite alternate}
-.bull-body,.bull-neck,.bull-head{fill:#7a4a2b}
-.bull-neck{fill:#8e5831}
-.bull-head{fill:#945d35}
-.bull-muzzle{fill:#b98058}
-.bull-eye{fill:#1c211a}
-.bull-horn{fill:none;stroke:#e7d6af;stroke-width:5;stroke-linecap:round;stroke-linejoin:round}
-.bull-tail{fill:none;stroke:#6a4028;stroke-width:5;stroke-linecap:round;animation:bull-tail 650ms ease-in-out infinite alternate}
-.bull-leg{fill:none;stroke:#613e29;stroke-width:8;stroke-linecap:round;stroke-linejoin:round;transform-box:fill-box;transform-origin:center top}
-.bull-leg-back{animation:bull-step 450ms ease-in-out infinite alternate}
-.bull-leg-front{animation:bull-step 450ms ease-in-out infinite alternate-reverse}
-@keyframes bull-bob{from{transform:translateY(1px)}to{transform:translateY(-5px)}}
-@keyframes bull-step{from{transform:skewX(-7deg)}to{transform:skewX(7deg)}}
-@keyframes bull-tail{from{transform:rotate(-5deg)}to{transform:rotate(7deg)}}
-@keyframes bull-shadow{from{transform:scaleX(1)}to{transform:scaleX(.85)}}
-@media(prefers-reduced-motion:reduce){.bull-loader *{animation:none!important}}
+.chip-loader-card{min-width:min(400px,88vw)}
+.chip-loader{width:min(360px,76vw)}
+.chip-loader svg{display:block;width:100%;height:auto}
+.chip-loader .trace-bg{stroke:#333;stroke-width:1.8;fill:none}
+.chip-loader .trace-flow{stroke-width:1.8;fill:none;stroke-dasharray:40 400;stroke-dashoffset:438;filter:drop-shadow(0 0 6px currentColor);animation:chip-flow 3s cubic-bezier(.5,0,.9,1) infinite}
+.chip-loader .yellow{stroke:#ffea00;color:#ffea00}
+.chip-loader .blue{stroke:#00ccff;color:#00ccff}
+.chip-loader .green{stroke:#00ff15;color:#00ff15}
+.chip-loader .purple{stroke:#9900ff;color:#9900ff}
+.chip-loader .red{stroke:#ff3300;color:#ff3300}
+@keyframes chip-flow{to{stroke-dashoffset:0}}
+@media(prefers-reduced-motion:reduce){.chip-loader *{animation:none!important}}
 .empty-chart{display:grid;place-items:center;align-content:center;gap:10px;text-align:center;padding:16px}
 @keyframes spin{to{transform:rotate(360deg)}}
 .chart-meta,.card-head,.ohlc-row{flex-wrap:wrap}
@@ -125,6 +124,8 @@ body,button,input,select{font-family:var(--font-sans),"Segoe UI",sans-serif}
   .metrics,.account-strip,.option-picks,.settings-grid,.heading-actions,.control-buttons{grid-template-columns:1fr}
   .control-buttons{display:grid}
   .control-buttons button,.heading-actions button{width:100%}
+  .strategy-run{display:flex}
+  .strategy-run button{width:auto}
   .top-actions{width:100%;justify-content:space-between}
   .chart-shell{height:300px}
   .segmented{flex-direction:column}
@@ -139,12 +140,33 @@ body,button,input,select{font-family:var(--font-sans),"Segoe UI",sans-serif}
 .option-chart-shell #optionChart{position:absolute;inset:0;z-index:1}
 .option-chart-toolbar{display:flex;align-items:center;justify-content:flex-end;gap:10px;margin:0 0 10px;flex-wrap:wrap}
 .option-grid-card > .table-wrap{margin-bottom:18px}
-.control-tabs{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:4px;margin:0 0 12px;padding:4px;border-radius:10px;background:#f3f6f9}
+html{scrollbar-gutter:stable}
+#liveAge{display:inline-block;width:190px;max-width:190px;text-align:right;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;vertical-align:middle}
+.option-grid-card .card-head{align-items:flex-start}
+.option-grid-card .chart-meta{flex:1 1 auto;justify-content:flex-end}
+#optionGrid .table-scroll{scrollbar-gutter:stable}
+.signal-banner{display:flex;flex-direction:column;gap:6px;flex:1 0 100%;margin:0 0 8px;padding:10px 12px;border:1px solid #d7e3d8;border-radius:12px;background:#f4faf4}
+.signal-banner > span{min-height:16px}
+.signal-banner strong{color:#173024;font-size:13px}
+.signal-banner > span{color:#496754;font-size:12px}
+.signal-mode{display:flex;gap:6px}
+.signal-mode button{flex:1}
+.control-tabs{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:4px;margin:0 0 12px;padding:4px;border-radius:10px;background:#f3f6f9}
 .control-tabs button{border:0;background:transparent;border-radius:8px;min-height:34px;padding:6px 2px;color:#526273;font-size:12px;font-weight:700}
 .control-tabs button.selected{background:#fff;color:#173024;box-shadow:0 1px 2px #0f172a14}
 .control-panel[hidden]{display:none !important}
 .control-card .settings-grid{grid-template-columns:1fr 1fr;gap:10px}
+.side-grid-settings{margin:0 0 14px;padding:12px;border:1px solid #d5deea;border-radius:10px;background:#f8fafc}
+.side-grid-settings h3{margin:0 0 10px;font-size:14px}
+.side-grid-settings[hidden]{display:none !important}
+#optionChartSides{margin-right:auto}
+#optionChartSides[hidden]{display:none !important}
 .control-card .save-btn{width:100%}
+.settings-lock-note{margin:0 0 12px;color:#8a4b12;background:#fff6eb;border:1px solid #f0d7b8;border-radius:8px;padding:8px 10px}
+#settingsForm.settings-locked input,
+#settingsForm.settings-locked select,
+#settingsForm.settings-locked textarea,
+#settingsForm.settings-locked button{opacity:.72}
 .lower-grid.bottom-grid{grid-template-columns:minmax(0,1fr)}
 @media(max-width:640px){
   .control-card .settings-grid,.control-tabs{grid-template-columns:1fr 1fr}
