@@ -8,12 +8,12 @@ export function signalMarkers(candles, nowSeconds = Date.now() / 1000) {
   for (const bar of candles) {
     const time = Number(bar.time);
     if (!Number.isFinite(time) || time + 900 > nowSeconds) continue;
-    if (bar.smaClose == null || bar.smaOpen == null) continue;
+    if (bar.emaClose == null || bar.emaOpen == null) continue;
     const open = Number(bar.open), close = Number(bar.close);
-    const smaClose = Number(bar.smaClose), smaOpen = Number(bar.smaOpen);
-    if (![open, close, smaClose, smaOpen].every(Number.isFinite)) continue;
-    const side = close > open && close > smaClose && close > smaOpen ? 'buy'
-      : close < open && close < smaClose && close < smaOpen ? 'sell' : null;
+    const emaClose = Number(bar.emaClose), emaOpen = Number(bar.emaOpen);
+    if (![open, close, emaClose, emaOpen].every(Number.isFinite)) continue;
+    const side = close > open && close > emaClose && close > emaOpen ? 'buy'
+      : close < open && close < emaClose && close < emaOpen ? 'sell' : null;
     if (!side) continue;
     const key = `${istDay.format(new Date(time * 1000))}:${side}`;
     if (marked.has(key)) continue;
