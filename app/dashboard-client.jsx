@@ -112,7 +112,7 @@ export default function DashboardClient({markup,view='dashboard'}) {
     }
     existing?.remove();
     const script = document.createElement('script');
-    script.src = '/dashboard.js?v=100';
+    script.src = '/dashboard.js?v=101';
     script.dataset.gridpilot = '1';
     script.dataset.version = '81';
     script.addEventListener('load', start);
