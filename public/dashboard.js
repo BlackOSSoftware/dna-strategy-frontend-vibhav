@@ -323,6 +323,8 @@ function bootGridPilot(){
   bootTimers.push(setInterval(refreshBroker,30000));
   $('brokerCallbackUrl').textContent=(location.hostname==='localhost'||location.hostname==='127.0.0.1'?'https://strategy-dna.emotionlesstraders.com':location.origin)+'/sharekhan/callback';
   $('brokerCopyCallback').onclick=async()=>{try{await navigator.clipboard.writeText($('brokerCallbackUrl').textContent);toast('Callback URL copied')}catch{toast('Could not copy URL; select it manually',true)}};
+  const loadServerIp=async()=>{const box=$('brokerServerIp');if(!box)return;try{const response=await fetch('/api/server-ip',{cache:'no-store'});const data=await response.json();box.textContent=data.ip||'Not available';}catch{box.textContent='Not available';}};loadServerIp();
+  if($('brokerCopyIp'))$('brokerCopyIp').onclick=async()=>{const ip=$('brokerServerIp')?.textContent||'';if(!/^\d{1,3}(\.\d{1,3}){3}$/.test(ip)){toast('Server IP is not available yet',true);return;}try{await navigator.clipboard.writeText(ip);toast('Server IP copied: '+ip)}catch{toast('Could not copy IP; select it manually',true)}};
   if(new URLSearchParams(window.location.search).get('sharekhan')==='connected'){
     toast('Sharekhan connected');
     window.history.replaceState({},'',window.location.pathname);
