@@ -110,7 +110,7 @@ function applySymbol(item){
   document.querySelector('[name="symbol"]').value=item.tradingSymbol;
   document.querySelector('[name="scripCode"]').value=item.scripCode;
   if(item.tickSize){for(const name of ['callTickSize','putTickSize']){const field=document.querySelector(`[name="${name}"]`);if(field)field.value=item.tickSize;}}
-  if(item.lotSize>0){for(const name of ['callQuantity','putQuantity']){const field=document.querySelector(`[name="${name}"]`);if(field)field.value=item.lotSize;}}
+  // lotSize is units per lot (NIFTY=65). Lots-per-leg stays whatever the user set (default 1) — never overwrite with lotSize.
   $('symbolResults').hidden=true;
   refreshOption();
 }
