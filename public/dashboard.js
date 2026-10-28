@@ -221,7 +221,7 @@ function paintBookChrome(book){
   const paper=book?.mode==='paper'||!showingLiveBook();
   if($('brokerBookEyebrow'))$('brokerBookEyebrow').textContent=paper?'PAPER':'SHAREKHAN';
   if($('brokerBookTitle'))$('brokerBookTitle').textContent=paper?'Paper order book and positions':'Live order book and positions';
-  if($('brokerBookNote'))$('brokerBookNote').textContent=paper?'Paper mode shows simulated grid fills, open positions, and P&L from Angel prices. Sharekhan book appears only after Start live. Clear is available after Stop.':'Read-only Sharekhan book. It updates every 2 seconds, and again as soon as Send live or Unplace finishes.';
+  if($('brokerBookNote'))$('brokerBookNote').textContent=paper?'Paper fills and closed trade history stay in this book when you Stop or set a new entry. Clear only after Stop. Sharekhan book appears after Start live.':'Read-only Sharekhan book. It updates every 2 seconds, and again as soon as Send live or Unplace finishes.';
   const clear=$('clearPaperBook');
   if(clear){
     const canClear=paper&&state?.status!=='running';
