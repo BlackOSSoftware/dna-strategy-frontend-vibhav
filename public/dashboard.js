@@ -234,7 +234,7 @@ function paintBookChrome(book){
   const paper=book?.mode==='paper'||!showingLiveBook();
   if($('brokerBookEyebrow'))$('brokerBookEyebrow').textContent=paper?'PAPER':'SHAREKHAN';
   if($('brokerBookTitle'))$('brokerBookTitle').textContent=paper?'Paper order book and positions':'Live order book and positions';
-  if($('brokerBookNote'))$('brokerBookNote').textContent=paper?'SIGNAL column shows which buy/sell signal started the trade. History stays after Stop or a new entry. Clear only after Stop.':'Read-only Sharekhan book. It updates every 2 seconds, and again as soon as Send live or Unplace finishes.';
+  if($('brokerBookNote'))$('brokerBookNote').textContent=paper?'SIGNAL = buy/sell that started the fill. Book shows filled/open/closed only — unused grid levels are not listed. Clear only after Stop.':'Read-only Sharekhan book. It updates every 2 seconds, and again as soon as Send live or Unplace finishes.';
   const head=$('brokerOrdersHead');
   if(head)head.innerHTML=paper
     ?'<tr><th>ORDER</th><th>SIGNAL</th><th>SYMBOL</th><th>SIDE</th><th>QTY (units)</th><th>FILLED</th><th>PRICE</th><th>STATUS</th><th>REASON</th><th>PRODUCT</th></tr>'
