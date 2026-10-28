@@ -105,7 +105,7 @@ export default function DashboardClient({markup,view='dashboard'}) {
       actions.appendChild(button);
     }
     const start = () => window.bootGridPilot?.();
-    const scriptVersion = '106';
+    const scriptVersion = '107';
     const existing = document.querySelector('script[data-gridpilot]');
     if (existing?.dataset.version === scriptVersion && window.bootGridPilot) {
       start();
